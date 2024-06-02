@@ -1,5 +1,8 @@
 #include "common.h"
 #include "shader.h"
+#include "program.h"
+#include "context.h"
+
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -73,11 +76,22 @@ int main(int argc, const char** argv)
     
     auto glVersion = glGetString(GL_VERSION);
     SPDLOG_INFO("OpenGL context version: {}", reinterpret_cast<const char*>(glVersion));
-    
-    auto vertexShader = Shader::CreateFromFile("./shader/sample.vs", GL_VERTEX_SHADER);
-    auto fragmentShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
-    SPDLOG_INFO("vertex shader id: {}", vertexShader->Get());
-    SPDLOG_INFO("fragment shader id: {}", fragmentShader->Get());
+    /*
+    ShaderPtr vertShader = Shader::CreateFromFile("./shader/sample.vs", GL_VERTEX_SHADER);
+    ShaderPtr fragShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
+    SPDLOG_INFO("vertex shader id: {}", vertShader->Get());
+    SPDLOG_INFO("fragment shader id: {}", fragShader->Get());
+
+    auto program = Program::Create({fragShader, vertShader});
+    SPDLOG_INFO("program id: {}", program->Get());
+    */
+
+    auto context = Context::Create();
+    if (!context) {
+        SPDLOG_ERROR("failed to create context");
+        glfwTerminate();
+        return -1;
+    }
 
     auto imguiContext = ImGui::CreateContext();
     ImGui::SetCurrentContext(imguiContext);
@@ -92,16 +106,16 @@ int main(int argc, const char** argv)
 
     SPDLOG_INFO("Start main loop");
     while (!glfwWindowShouldClose(window)) {
-        glfwPollEvents();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        Render();
+        context->Render();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
         
         glfwSwapBuffers(window);
+        glfwPollEvents();        
     }
 
     ImGui_ImplOpenGL3_DestroyFontsTexture();
@@ -109,6 +123,8 @@ int main(int argc, const char** argv)
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext(imguiContext);
 
+    context.reset();
+    
     glfwTerminate();
     SPDLOG_INFO("End glfw window");
     return 0;
