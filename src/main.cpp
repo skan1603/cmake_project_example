@@ -1,3 +1,5 @@
+#include "common.h"
+#include "shader.h"
 #include <iostream>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -39,7 +41,7 @@ void Render() {
 }
 int main(int argc, const char** argv)
 { 
-    SPDLOG_INFO("Start program");
+    SPDLOG_INFO("Start program!!");
 
     SPDLOG_INFO("Initialize glfw");
     if (!glfwInit()) {
@@ -63,7 +65,6 @@ int main(int argc, const char** argv)
     
     glfwMakeContextCurrent(window);
     
-    // glad를 활용한 OpenGL 함수 로딩
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         SPDLOG_ERROR("failed to initialize glad");
         glfwTerminate();
@@ -73,6 +74,11 @@ int main(int argc, const char** argv)
     auto glVersion = glGetString(GL_VERSION);
     SPDLOG_INFO("OpenGL context version: {}", reinterpret_cast<const char*>(glVersion));
     
+    auto vertexShader = Shader::CreateFromFile("./shader/sample.vs", GL_VERTEX_SHADER);
+    auto fragmentShader = Shader::CreateFromFile("./shader/simple.fs", GL_FRAGMENT_SHADER);
+    SPDLOG_INFO("vertex shader id: {}", vertexShader->Get());
+    SPDLOG_INFO("fragment shader id: {}", fragmentShader->Get());
+
     auto imguiContext = ImGui::CreateContext();
     ImGui::SetCurrentContext(imguiContext);
     ImGui_ImplGlfw_InitForOpenGL(window, false);

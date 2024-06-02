@@ -8,7 +8,11 @@ set(WINDOW_WIDTH 640)
 set(WINDOW_HEIGHT 480)
 
 project(${PROJECT_NAME})
-add_executable(${PROJECT_NAME} src/main.cpp)
+add_executable(${PROJECT_NAME}
+  src/main.cpp
+  src/common.cpp src/common.h
+  src/shader.cpp src/shader.h
+  )
 
 # ExternalProject 관련 명령어 셋 추가
 include(ExternalProject)
