@@ -4,6 +4,10 @@
 #include "common.h"
 #include "shader.h"
 #include "program.h"
+#include "buffer.h"
+#include "vertex_layout.h"
+#include "image.h"
+#include "texture.h"
 
 CLASS_PTR(Context)
 class Context {
@@ -14,6 +18,14 @@ private:
     Context() {}
     bool Init();
     ProgramUPtr m_program;
+
+    //uint32_t m_vertexArrayObject;
+    VertexLayoutUPtr m_vertexLayout;
+	BufferUPtr m_vertexBuffer;
+    BufferUPtr m_indexBuffer;
+    TextureUPtr m_texture;
+    TextureUPtr m_texture2;
 };
+
 
 #endif // __CONTEXT_H__

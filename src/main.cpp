@@ -35,12 +35,12 @@ void OnKeyEvent(GLFWwindow* window,
 void Render() {
     glClearColor(0.1f, 0.2f, 0.3f, 0.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-
+/*z
     if (ImGui::Begin("my first ImGui window")) {
         ImGui::Text("This is first text...");
     }
     ImGui::End();
-
+*/
 }
 int main(int argc, const char** argv)
 { 
@@ -93,36 +93,39 @@ int main(int argc, const char** argv)
         return -1;
     }
 
+    glfwSwapInterval(1);
+/*
     auto imguiContext = ImGui::CreateContext();
     ImGui::SetCurrentContext(imguiContext);
     ImGui_ImplGlfw_InitForOpenGL(window, false);
     ImGui_ImplOpenGL3_Init();
     ImGui_ImplOpenGL3_CreateFontsTexture();
     ImGui_ImplOpenGL3_CreateDeviceObjects();
-
+*/
     OnFramebufferSizeChange(window, WINDOW_WIDTH, WINDOW_HEIGHT);
     glfwSetFramebufferSizeCallback(window, OnFramebufferSizeChange);
     glfwSetKeyCallback(window, OnKeyEvent);
 
     SPDLOG_INFO("Start main loop");
     while (!glfwWindowShouldClose(window)) {
+/*        
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
+*/
         context->Render();
-
+/*
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-        
+*/        
         glfwSwapBuffers(window);
         glfwPollEvents();        
     }
-
+/*
     ImGui_ImplOpenGL3_DestroyFontsTexture();
     ImGui_ImplOpenGL3_DestroyDeviceObjects();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext(imguiContext);
-
+*/
     context.reset();
     
     glfwTerminate();
